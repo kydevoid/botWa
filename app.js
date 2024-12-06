@@ -3,6 +3,8 @@ import {
   useMultiFileAuthState,
   DisconnectReason,
 } from "@whiskeysockets/baileys";
+import "dotenv/config";
+import geminiAI from "./libs/geminiAi";
 
 const connectToWhatsApp = async () => {
   const { state, saveCreds } = await useMultiFileAuthState("auth");
@@ -33,19 +35,23 @@ const connectToWhatsApp = async () => {
       console.log("opened connection");
     }
   });
+
   sock.ev.on("messages.upsert", async (m) => {
     console.log(JSON.stringify(m, undefined, 2));
 
-    if (m.messages[0].startWith("/zakyai")) {
-      let param = split(m.messages[0][1].trim());
+    if (m.messages[0].message.conversation.startsWith("/zakyai")) {
+      const param = m.messages[0].message.conversation
+        .split("/zakyai")[1]
+        .trim();
       console.log(param);
+      const geminiRes = await geminiAI(param);
+      console.log("replying to", m.messages[0].key.remoteJid);
+      await sock.sendMessage(m.messages[0].key.remoteJid, {
+        text: geminiRes,
+      });
     }
-
-    // console.log("replying to", m.messages[0].key.remoteJid);
-    // await sock.sendMessage(m.messages[0].key.remoteJid, {
-    //   text: "Hello there!",
-    // });
   });
 };
+
 // run in main file
 connectToWhatsApp();

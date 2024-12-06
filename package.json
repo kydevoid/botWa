@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "-": "^0.0.1",
+    "@google/generative-ai": "^0.21.0",
     "@whiskeysockets/baileys": "^6.7.9",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "qrcode-terminal": "^0.12.0"
   },
   "devDependencies": {
