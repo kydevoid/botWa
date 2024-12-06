@@ -47,7 +47,7 @@ const connectToWhatsApp = async () => {
       const geminiRes = await geminiAI(param);
       console.log("replying to", m.messages[0].key.remoteJid);
       await sock.sendMessage(m.messages[0].key.remoteJid, {
-        text: geminiRes,
+        text: `Hallo iam Fachrie AI \n\n${geminiRes}`,
       });
     }
   });
